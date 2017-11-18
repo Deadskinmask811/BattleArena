@@ -18,14 +18,13 @@ class Entity:
     skill = 0
 
     def attack(self):
-        #TODO ROUND ATTACK DAMAGE SO WE ARE NOT USING FLOATS
         #do you hit?
         if self.check_hit():
             #do you crit?
             if self.check_crit():
                 #do crit
                 damage = random.randrange(self.weapon.min_dmg, self.weapon.max_dmg)
-                crit = damage + (damage * .2) 
+                crit = round(damage + (damage * .2))
                 return crit
 
             return random.randrange(self.weapon.min_dmg, self.weapon.max_dmg) 
