@@ -125,19 +125,42 @@ def create_player():
     player_character = Entity(name, 100, .5, .5, .75, .15, Weapon("sword of ultimate doom", 2, 6))
     return player_character
 
+
 # start game here, all code for the game goes into game()
-def game():
-    player = create_player()
 
-    # DEBUG
-    npc = Entity("bear", 100, .5, .5, .75, .15, Weapon("Claws", 1, 3))
+class Game:
 
-    fight = Battle(player, npc)
-    fight.do_battle()
+    def setup(self):
+        player = create_player()
+        return player
 
+    def show_lobby(self, player):
+        print("\nStats - Name: {}, Health: {}, Weapon: {}".format(player.name, player.health, player.weapon.name))
+
+        print("1. Fight")
+
+
+    
 def main():
-    x = game
-    x()
+    game = Game()
+    player = game.setup()
+    print("Welcome, {}!!!".format(player.name))
+    while player.alive:
+
+        game.show_lobby(player)
+        
+        selection = input("What do you wish to do? ")
+        if selection == "1":
+            # TODO this gets replaced by a class that takes care of doing the battling, taking the player class
+            # and getting an enemy, either by random creation or predetermined order?
+            print("DEBUG: DOING TEST BATTLE")
+            npc = Entity("bear", 100, .5, .5, .75, .15, Weapon("Claws", 1, 3))
+
+            fight = Battle(player, npc)
+            fight.do_battle()
+
+
+    
 
 if __name__ == "__main__":
     main()
