@@ -1,5 +1,5 @@
 import random
-
+import sys
 class Entity:
     """
     Class of all Entities in the game, used for player and for enemy NPCs.
@@ -34,6 +34,7 @@ class Entity:
 
     def check_hit(self):
         roll = random.random()
+        print("DEBUG: hit roll = {}".format(roll))
         if roll <= self.hit:
             return True
         else:
@@ -99,7 +100,7 @@ class Battle:
             else:
                 self.attacker2.receive_damage(attacker1_attack)
                 print("{} deals {} damage to {}".format(self.attacker1.name, attacker1_attack, self.attacker2.name))
-                print("DEBUG: {} has {} health remaining".format(self.attacker2.name, self.attacker2.health))
+                #print("DEBUG: {} has {} health remaining".format(self.attacker2.name, self.attacker2.health))
                 # if vita_check() returns False break out of combat
                 if not self.attacker2.vital_check():
                     print("{} has defeated {}".format(self.attacker1.name, self.attacker2.name))
@@ -112,7 +113,7 @@ class Battle:
             else:
                 self.attacker1.receive_damage(attacker2_attack)
                 print("{} receives {} damage from {}".format(self.attacker1.name, attacker2_attack, self.attacker2.name))
-                print("DEBUG: {} have {} health left".format(self.attacker1.name, self.attacker1.health))
+                #print("DEBUG: {} have {} health left".format(self.attacker1.name, self.attacker1.health))
                 # if vital_check() returns False break out of combat
                 if not self.attacker1.vital_check():
                     print("{} has been defeated".format(self.attacker1.name))
@@ -138,8 +139,23 @@ class Game:
         print("\nStats - Name: {}, Health: {}, Weapon: {}".format(player.name, player.health, player.weapon.name))
 
         print("1. Fight")
+        print("4. Exit Game")
 
+    def random_enemy(self):
+        '''
+        returns an Entity enemy object that is selected randomly from a list of Entity objects
+        '''
+        enemies_list = [
+                        #TODO dodge and block are currently unused.
+                        # name, health, dodge, block, hit, crit, Weapon
+                        Entity("Bear", 35, .5, 0, .75, .15, Weapon("Claws", 1, 3)),
+                        Entity("Klaud", 25, .10, .5, .65, .20, Weapon("Dual Scimitars", 2, 4)),
+                        Entity("Donald Trump", 30, .2, 0, .75, .15, Weapon("YUGE MOUTH", 1, 5))
 
+                       ]
+        random_num = random.randrange(0, len(enemies_list))
+        return enemies_list[random_num]
+    
     
 def main():
     game = Game()
@@ -153,11 +169,17 @@ def main():
         if selection == "1":
             # TODO this gets replaced by a class that takes care of doing the battling, taking the player class
             # and getting an enemy, either by random creation or predetermined order?
+            '''
             print("DEBUG: DOING TEST BATTLE")
             npc = Entity("bear", 100, .5, .5, .75, .15, Weapon("Claws", 1, 3))
 
             fight = Battle(player, npc)
             fight.do_battle()
+            '''
+            fight = Battle(player, game.random_enemy())
+            fight.do_battle()
+        elif selection == "4":
+            sys.exit()
 
 
     
